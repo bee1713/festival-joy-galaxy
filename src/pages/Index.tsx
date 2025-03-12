@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import ColorBurst from '../components/ColorBurst';
 import Background from '../components/Background';
@@ -66,6 +67,10 @@ const Index = () => {
     }
   };
 
+  const handleInputAreaClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent the click event from bubbling up
+  };
+
   return (
     <div 
       className="relative w-screen h-screen overflow-hidden cursor-pointer"
@@ -98,7 +103,10 @@ const Index = () => {
       ))}
       
       {/* Instructions Input with Send Button */}
-      <div className="fixed bottom-6 left-0 right-0 text-center flex items-center justify-center gap-2">
+      <div 
+        className="fixed bottom-6 left-0 right-0 text-center flex items-center justify-center gap-2"
+        onClick={handleInputAreaClick} // Stop propagation on the container
+      >
         <Input
           type="text"
           value={customMessage}
