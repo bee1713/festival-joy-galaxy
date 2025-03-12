@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import ColorBurst from '../components/ColorBurst';
 import Background from '../components/Background';
+import HoliWish from '../components/HoliWish';
 import gsap from 'gsap';
 import { toast } from 'sonner';
+import { Input } from "@/components/ui/input";
 
 interface BurstPoint {
   id: number;
@@ -13,6 +15,7 @@ interface BurstPoint {
 const Index = () => {
   const [burstPoints, setBurstPoints] = useState<BurstPoint[]>([]);
   const [headerVisible, setHeaderVisible] = useState(false);
+  const [customMessage, setCustomMessage] = useState('Click and drag for more color explosions');
 
   useEffect(() => {
     // Show welcome toast
@@ -48,6 +51,10 @@ const Index = () => {
     }, 3000);
   };
 
+  const handleMessageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCustomMessage(e.target.value);
+  };
+
   return (
     <div 
       className="relative w-screen h-screen overflow-hidden cursor-pointer"
@@ -79,12 +86,23 @@ const Index = () => {
         />
       ))}
       
-      {/* Instructions */}
+      {/* Instructions Input */}
       <div className="fixed bottom-6 left-0 right-0 text-center">
-        <p className="text-white/80 text-shadow animate-pulse-glow px-4 py-2 rounded-full glass-panel inline-block">
-          Click and drag for more color explosions
-        </p>
+        <Input
+          type="text"
+          value={customMessage}
+          onChange={handleMessageChange}
+          className="max-w-xs mx-auto text-white bg-transparent border-white/20 glass-panel hover:border-white/40 transition-colors"
+          placeholder="Enter your message"
+        />
       </div>
+
+      {/* Show the custom message as a Holi wish */}
+      <HoliWish
+        wish={customMessage}
+        x={window.innerWidth / 2}
+        y={window.innerHeight - 100}
+      />
     </div>
   );
 };
