@@ -1,12 +1,8 @@
-
 import React, { useState, useEffect } from 'react';
 import ColorBurst from '../components/ColorBurst';
 import Background from '../components/Background';
 import gsap from 'gsap';
-import { toast } from '@/components/ui/sonner';
-
-// Add GSAP dependency
-<lov-add-dependency>gsap@^3.12.5</lov-add-dependency>
+import { toast } from 'sonner';
 
 interface BurstPoint {
   id: number;
