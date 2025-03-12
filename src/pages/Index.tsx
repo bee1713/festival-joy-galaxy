@@ -5,6 +5,8 @@ import HoliWish from '../components/HoliWish';
 import gsap from 'gsap';
 import { toast } from 'sonner';
 import { Input } from "@/components/ui/input";
+import { Send } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface BurstPoint {
   id: number;
@@ -15,7 +17,8 @@ interface BurstPoint {
 const Index = () => {
   const [burstPoints, setBurstPoints] = useState<BurstPoint[]>([]);
   const [headerVisible, setHeaderVisible] = useState(false);
-  const [customMessage, setCustomMessage] = useState('Click and drag for more color explosions');
+  const [customMessage, setCustomMessage] = useState('');
+  const [displayMessage, setDisplayMessage] = useState('');
 
   useEffect(() => {
     // Show welcome toast
@@ -55,6 +58,14 @@ const Index = () => {
     setCustomMessage(e.target.value);
   };
 
+  const handleSendMessage = () => {
+    if (customMessage.trim()) {
+      setDisplayMessage(customMessage);
+      setCustomMessage('');
+      toast.success('Message sent!');
+    }
+  };
+
   return (
     <div 
       className="relative w-screen h-screen overflow-hidden cursor-pointer"
@@ -86,23 +97,35 @@ const Index = () => {
         />
       ))}
       
-      {/* Instructions Input */}
-      <div className="fixed bottom-6 left-0 right-0 text-center">
+      {/* Instructions Input with Send Button */}
+      <div className="fixed bottom-6 left-0 right-0 text-center flex items-center justify-center gap-2">
         <Input
           type="text"
           value={customMessage}
           onChange={handleMessageChange}
-          className="max-w-xs mx-auto text-white bg-transparent border-white/20 glass-panel hover:border-white/40 transition-colors"
+          className="max-w-xs text-white bg-transparent border-white/20 glass-panel hover:border-white/40 transition-colors"
           placeholder="Enter your message"
         />
+        <Button 
+          onClick={(e) => {
+            e.stopPropagation(); // Prevent color burst on button click
+            handleSendMessage();
+          }}
+          className="bg-transparent hover:bg-white/10 border border-white/20"
+          size="icon"
+        >
+          <Send className="h-4 w-4 text-white" />
+        </Button>
       </div>
 
       {/* Show the custom message as a Holi wish */}
-      <HoliWish
-        wish={customMessage}
-        x={window.innerWidth / 2}
-        y={window.innerHeight - 100}
-      />
+      {displayMessage && (
+        <HoliWish
+          wish={displayMessage}
+          x={window.innerWidth / 2}
+          y={window.innerHeight - 100}
+        />
+      )}
     </div>
   );
 };
